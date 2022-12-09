@@ -1,3 +1,5 @@
+using Core.Common;
+
 namespace Core;
 
 public interface IRenderer
@@ -6,6 +8,6 @@ public interface IRenderer
     public int Height { get; }
 
     void Clear();
-    void Draw(ReadOnlySpan<char> symbols, int x, int y);
+    void Draw(ReadOnlySpan<char> symbols, Vector2<int> position);
     void Display();
 }

@@ -2,6 +2,25 @@ using Core.Ecs.Components;
 
 namespace Core.Ecs.ComponentFilters;
 
+public ref struct ComponentsTuple<TComponent>
+    where TComponent : struct, IComponent<TComponent>
+{
+    public int EntityId;
+    public Span<TComponent> Component;
+
+    public ComponentsTuple(int entityId, Span<TComponent> component)
+    {
+        EntityId = entityId;
+        Component = component;
+    }
+
+    public void Deconstruct(out int entityId, out Span<TComponent> component)
+    {
+        entityId = EntityId;
+        component = Component;
+    }
+}
+
 public ref struct ComponentsTuple<TComponent, TComponent1>
     where TComponent : struct, IComponent<TComponent>
     where TComponent1 : struct, IComponent<TComponent1>

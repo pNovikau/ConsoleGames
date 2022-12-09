@@ -23,6 +23,7 @@ public class Game
 
         _gameWorld.SystemManager.RegisterSystem<FpsSystem>(context);
         _gameWorld.SystemManager.RegisterSystem<PlayerControlSystem>(context);
+        _gameWorld.SystemManager.RegisterSystem<CollisionDetectionSystem>(context);
         _gameWorld.SystemManager.RegisterSystem<MoveSystem>(context);
         _gameWorld.SystemManager.RegisterSystem<DrawFpsSystem>(context);
         _gameWorld.SystemManager.RegisterSystem<DrawSystem>(context);

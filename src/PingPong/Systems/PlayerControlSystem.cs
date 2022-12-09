@@ -1,5 +1,6 @@
 ﻿using Core;
 using Core.Ecs.ComponentFilters;
+using Core.Ecs.Extensions;
 using PingPong.Components;
 
 namespace PingPong.Systems;
@@ -10,7 +11,7 @@ public class PlayerControlSystem : Core.Ecs.Systems.System
 
     public override void Initialize(GameContext context)
     {
-        _componentsFilter = new ComponentsFilter<PlayerComponent, MoveComponent>(context.GameWorld.EntityManager, context.GameWorld.ComponentManager);
+        _componentsFilter = context.GameWorld.CreateComponentFilter<PlayerComponent, MoveComponent>();
     }
     
     public override void Update(GameContext context)

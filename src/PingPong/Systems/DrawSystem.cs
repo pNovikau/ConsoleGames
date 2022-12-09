@@ -1,5 +1,6 @@
 using Core;
 using Core.Ecs.ComponentFilters;
+using Core.Ecs.Extensions;
 using PingPong.Components;
 
 namespace PingPong.Systems;
@@ -10,7 +11,7 @@ public class DrawSystem : Core.Ecs.Systems.System
 
     public override void Initialize(GameContext context)
     {
-        _componentsFilter = new ComponentsFilter<DrawableComponent, PositionComponent>(context.GameWorld.EntityManager, context.GameWorld.ComponentManager);
+        _componentsFilter = context.GameWorld.CreateComponentFilter<DrawableComponent, PositionComponent>();
     }
 
     public override void Update(GameContext context)
@@ -20,7 +21,7 @@ public class DrawSystem : Core.Ecs.Systems.System
             ref var drawableComponent = ref drawableComponentSpan[0];
             ref var positionComponent = ref positionComponentSpan[0];
 
-            context.Renderer.Draw(drawableComponent.Symbols, positionComponent.X, positionComponent.Y);
+            context.Renderer.Draw(drawableComponent.Symbols, positionComponent.Point);
         }
     }
 }

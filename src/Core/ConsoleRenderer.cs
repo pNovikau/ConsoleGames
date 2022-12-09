@@ -1,3 +1,5 @@
+using Core.Common;
+
 namespace Core;
 
 public class ConsoleRenderer : IRenderer
@@ -26,9 +28,9 @@ public class ConsoleRenderer : IRenderer
         Console.Clear();
     }
 
-    public void Draw(ReadOnlySpan<char> symbols, int x, int y)
+    public void Draw(ReadOnlySpan<char> symbols, Vector2<int> position)
     {
-        var area = _renderArea.AsSpan().Slice((_width * y) + x, symbols.Length);
+        var area = _renderArea.AsSpan().Slice((_width * position.Y) + position.X, symbols.Length);
 
         for (var i = 0; i < symbols.Length; i++)
         {

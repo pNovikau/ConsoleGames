@@ -10,4 +10,5 @@ public interface IGameWorld
 
     void Initialize(GameContext context);
     EntityBuilder AddEntity();
+    EntityBuilder GetEntity(int id);
 }

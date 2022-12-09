@@ -42,16 +42,16 @@ public class ComponentsFilter<TComponent> : ComponentsFilter, IEnumerable
             _index = -1;
         }
 
-        public unsafe Span<TComponent> Current
+        public unsafe ComponentsTuple<TComponent> Current
         {
             get
             {
                 ref var entity = ref _componentFilter.EntityManager.Get(_componentFilter.EntitiesIds[_index]);
 
                 var componentId = entity.Components[IComponent<TComponent>.ComponentType];
-                ref var component = ref _componentFilter.ComponentManager.GetComponent<TComponent>(componentId);
+                var component = _componentFilter.ComponentManager.GetComponentAsSpan<TComponent>(componentId);
 
-                return new Span<TComponent>(Unsafe.AsPointer(ref component), 1);
+                return new ComponentsTuple<TComponent>(_componentFilter.EntitiesIds[_index], component);
             }
         }
 

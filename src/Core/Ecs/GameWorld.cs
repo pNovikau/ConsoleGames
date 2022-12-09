@@ -27,4 +27,9 @@ public class GameWorld : IGameWorld
 
         return new EntityBuilder(entity.Id, EntityManager, ComponentManager);
     }
+
+    public EntityBuilder GetEntity(int id)
+    {
+        return new EntityBuilder(id, EntityManager, ComponentManager);
+    }
 }
