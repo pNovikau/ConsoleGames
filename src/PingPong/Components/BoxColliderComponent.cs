@@ -1,4 +1,3 @@
-using System.Drawing;
 using Core.Common;
 using Core.Ecs.Components;
 

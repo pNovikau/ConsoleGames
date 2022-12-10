@@ -1,5 +1,5 @@
+using System.Diagnostics;
 using Core;
-using Core.Common;
 using Core.Ecs.ComponentFilters;
 using Core.Ecs.Extensions;
 using PingPong.Components;
@@ -28,15 +28,26 @@ public class CollisionDetectionSystem : Core.Ecs.Systems.System
                     continue;
 
                 ref var targetBoxColliderComponent = ref targetBoxColliderComponentSpan[0];
+                var entity = context.GameWorld.GetEntity(sourceEntityId);
 
                 var overlap = Math.GetOverlappingArea(sourceCollidedComponent.Rectangle, targetBoxColliderComponent.Rectangle);
 
-                if (overlap != Rectangle<int>.Empty)
+                if (!overlap.IsEmpty)
                 {
-                    ref var sourceHasCollisionComponent = ref context.GameWorld.GetEntity(sourceEntityId).AddComponent<HasCollisionComponent>();
+                    ref var sourceHasCollisionComponent = ref entity.HasComponent<HasCollisionComponent>()
+                        ? ref entity.GetComponent<HasCollisionComponent>()
+                        : ref entity.AddComponent<HasCollisionComponent>();
 
                     sourceHasCollisionComponent.Overlap = overlap;
                     sourceHasCollisionComponent.TargetEntityId = targetEntityId;
+                    
+                    Debug.WriteLine("[CollisionDetectionSystem]: Collision added {0} target {1}", sourceEntityId, targetEntityId);
+                }
+                else if (entity.HasComponent<HasCollisionComponent>())
+                {
+                    entity.RemoveComponent<HasCollisionComponent>();
+                    
+                    Debug.WriteLine("[CollisionDetectionSystem]: Collision removed {0} target {1}", sourceEntityId, targetEntityId);
                 }
             }
         }

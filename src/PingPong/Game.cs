@@ -21,18 +21,20 @@ public class Game
             Renderer = _renderer
         };
 
-        _gameWorld.SystemManager.RegisterSystem<FpsSystem>(context);
-        _gameWorld.SystemManager.RegisterSystem<PlayerControlSystem>(context);
-        _gameWorld.SystemManager.RegisterSystem<CollisionDetectionSystem>(context);
-        _gameWorld.SystemManager.RegisterSystem<MoveSystem>(context);
-        _gameWorld.SystemManager.RegisterSystem<DrawFpsSystem>(context);
-        _gameWorld.SystemManager.RegisterSystem<DrawSystem>(context);
+        _gameWorld.RegisterSystem<FpsSystem>(context);
+        _gameWorld.RegisterSystem<PlayerControlSystem>(context);
+        _gameWorld.RegisterSystem<MoveCollidersSystem>(context);
+        _gameWorld.RegisterSystem<CollisionDetectionSystem>(context);
+        _gameWorld.RegisterSystem<CollisionResolverSystem>(context);
+        _gameWorld.RegisterSystem<MoveSystem>(context);
+        _gameWorld.RegisterSystem<DrawFpsSystem>(context);
+        _gameWorld.RegisterSystem<DrawSystem>(context);
 
         _gameWorld.Initialize(context);
 
         FpsEntity.Create(_gameWorld);
         PlayerEntity.Create(context);
-        BoxEntity.Create(context);
+        BoxEntities.Create(context);
     }
 
     public void Run()
@@ -50,8 +52,7 @@ public class Game
 
             context.Renderer.Clear();
 
-            foreach (var system in _gameWorld.SystemManager.Systems)
-                system.Update(context);
+            _gameWorld.Update(context);
 
             context.GameTime.Update();
             context.Renderer.Display();

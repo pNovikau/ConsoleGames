@@ -17,7 +17,7 @@ public class ComponentsFilter<TComponent> : ComponentsFilter, IEnumerable
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-    public struct Enumerator : IEnumerator
+    public struct Enumerator : IEnumerator, IDisposable
     {
         private readonly ComponentsFilter<TComponent> _componentFilter;
 
@@ -26,6 +26,8 @@ public class ComponentsFilter<TComponent> : ComponentsFilter, IEnumerable
         public Enumerator(ComponentsFilter<TComponent> componentFilter) : this()
         {
             _componentFilter = componentFilter;
+
+            _componentFilter.IsBusy = true;
         }
 
         public bool MoveNext()
@@ -57,7 +59,11 @@ public class ComponentsFilter<TComponent> : ComponentsFilter, IEnumerable
 
         object IEnumerator.Current => throw new NotImplementedException();
 
-        public void Dispose() => Reset();
+        public void Dispose()
+        {
+            Reset();
+            _componentFilter.IsBusy = false;
+        }
     }
 }
 
@@ -74,7 +80,7 @@ public class ComponentsFilter<TComponent, TComponent1> : ComponentsFilter, IEnum
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-    public struct Enumerator : IEnumerator
+    public struct Enumerator : IEnumerator, IDisposable
     {
         private readonly ComponentsFilter<TComponent, TComponent1> _componentFilter;
 
@@ -83,6 +89,8 @@ public class ComponentsFilter<TComponent, TComponent1> : ComponentsFilter, IEnum
         public Enumerator(ComponentsFilter<TComponent, TComponent1> componentFilter) : this()
         {
             _componentFilter = componentFilter;
+
+            _componentFilter.IsBusy = true;
         }
 
         public bool MoveNext()
@@ -117,7 +125,11 @@ public class ComponentsFilter<TComponent, TComponent1> : ComponentsFilter, IEnum
 
         object IEnumerator.Current => throw new NotImplementedException();
 
-        public void Dispose() => Reset();
+        public void Dispose()
+        {
+            Reset();
+            _componentFilter.IsBusy = false;
+        }
     }
 }
 
@@ -136,7 +148,7 @@ public class ComponentsFilter<TComponent, TComponent1, TComponent2> : Components
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-    public struct Enumerator : IEnumerator
+    public struct Enumerator : IEnumerator, IDisposable
     {
         private readonly ComponentsFilter<TComponent, TComponent1, TComponent2> _componentFilter;
 
@@ -145,6 +157,8 @@ public class ComponentsFilter<TComponent, TComponent1, TComponent2> : Components
         public Enumerator(ComponentsFilter<TComponent, TComponent1, TComponent2> componentFilter) : this()
         {
             _componentFilter = componentFilter;
+
+            _componentFilter.IsBusy = true;
         }
 
         public bool MoveNext()
@@ -182,7 +196,12 @@ public class ComponentsFilter<TComponent, TComponent1, TComponent2> : Components
 
         object IEnumerator.Current => throw new NotImplementedException();
 
-        public void Dispose() => Reset();
+        public void Dispose()
+        {
+            Reset();
+
+            _componentFilter.IsBusy = false;
+        }
     }
 }
 
@@ -203,7 +222,7 @@ public class ComponentsFilter<TComponent, TComponent1, TComponent2, TComponent3>
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-    public struct Enumerator : IEnumerator
+    public struct Enumerator : IEnumerator, IDisposable
     {
         private readonly ComponentsFilter<TComponent, TComponent1, TComponent2, TComponent3> _componentFilter;
 
@@ -212,6 +231,8 @@ public class ComponentsFilter<TComponent, TComponent1, TComponent2, TComponent3>
         public Enumerator(ComponentsFilter<TComponent, TComponent1, TComponent2, TComponent3> componentFilter) : this()
         {
             _componentFilter = componentFilter;
+
+            _componentFilter.IsBusy = true;
         }
 
         public bool MoveNext()
@@ -252,6 +273,11 @@ public class ComponentsFilter<TComponent, TComponent1, TComponent2, TComponent3>
 
         object IEnumerator.Current => throw new NotImplementedException();
 
-        public void Dispose() => Reset();
+        public void Dispose()
+        {
+            Reset();
+
+            _componentFilter.IsBusy = false;
+        }
     }
 }

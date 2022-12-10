@@ -8,24 +8,14 @@ namespace PingPong.Systems;
 public class MoveSystem : Core.Ecs.Systems.System
 {
     private ComponentsFilter<MoveComponent, PositionComponent> _componentsFilter = default!;
-    private ComponentsFilter<MoveComponent, HasCollisionComponent> _collisionFilter = default!;
 
     public override void Initialize(GameContext context)
     {
         _componentsFilter = context.GameWorld.CreateComponentFilter<MoveComponent, PositionComponent>();
-        _collisionFilter = context.GameWorld.CreateComponentFilter<MoveComponent, HasCollisionComponent>();
     }
 
     public override void Update(GameContext context)
     {
-        foreach (var (_, moveComponentSpan, hasCollisionComponentSpan) in _collisionFilter)
-        {
-            ref var moveComponent = ref moveComponentSpan[0];
-            ref var hasCollisionComponent = ref hasCollisionComponentSpan[0];
-
-            moveComponent.Dir = MoveComponent.Direction.None;
-        }
-
         foreach (var (_, moveComponentSpan, positionComponentSpan) in _componentsFilter)
         {
             ref var moveComponent = ref moveComponentSpan[0];

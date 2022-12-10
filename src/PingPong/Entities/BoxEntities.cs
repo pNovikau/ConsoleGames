@@ -1,13 +1,70 @@
-using System.Drawing;
 using Core;
+using Core.Common;
 using PingPong.Components;
 
 namespace PingPong.Entities;
 
-public static class BoxEntity
+public static class BoxEntities
 {
+    private static void CreateLeftWall(in GameContext gameContext)
+    {
+        var gameWorld = gameContext.GameWorld;
+        var wall = gameWorld.AddEntity();
+        
+        ref var positionComponent = ref wall.AddComponent<PositionComponent>();
+        positionComponent.Point = new Vector2<int>(0, 2);
+
+        ref var boxColliderComponent = ref wall.AddComponent<BoxColliderComponent>();
+        var size = new Vector2<int>
+        {
+            X = 1,
+            Y = gameContext.Renderer.Height - positionComponent.Point.Y
+        };
+        boxColliderComponent.Rectangle = new Rectangle<int>(positionComponent.Point, size);
+
+        ref var drawableComponent = ref wall.AddComponent<DrawableComponent>();
+        var array = new char[gameContext.Renderer.Width * size.Y];
+        for (var i = 0; i < array.Length; i++)
+        {
+            if (i % gameContext.Renderer.Width == 0)
+                array[i] = '*';
+        }
+
+        drawableComponent.Symbols = array;
+    }
+    
+    private static void CreateRightWall(in GameContext gameContext)
+    {
+        var gameWorld = gameContext.GameWorld;
+        var wall = gameWorld.AddEntity();
+        
+        ref var positionComponent = ref wall.AddComponent<PositionComponent>();
+        positionComponent.Point = new Vector2<int>(0, 2);
+
+        ref var boxColliderComponent = ref wall.AddComponent<BoxColliderComponent>();
+        var size = new Vector2<int>
+        {
+            X = 1,
+            Y = gameContext.Renderer.Height - positionComponent.Point.Y
+        };
+        boxColliderComponent.Rectangle = new Rectangle<int>(new Vector2<int>(gameContext.Renderer.Width - 1, 2), size);
+
+        ref var drawableComponent = ref wall.AddComponent<DrawableComponent>();
+        var array = new char[gameContext.Renderer.Width * size.Y];
+        for (var i = 0; i < array.Length; i++)
+        {
+            if ((i + 1) % gameContext.Renderer.Width == 0)
+                array[i] = '*';
+        }
+
+        drawableComponent.Symbols = array;
+    }
+    
     public static void Create(in GameContext gameContext)
     {
+        CreateLeftWall(gameContext);
+        CreateRightWall(gameContext);
+
         //var gameWorld = gameContext.GameWorld;
         //var wall = gameWorld.AddEntity();
         //

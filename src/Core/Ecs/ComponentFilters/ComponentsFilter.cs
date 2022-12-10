@@ -9,9 +9,32 @@ public abstract class ComponentsFilter : IComponentFilter
 {
     private readonly int[] _componentTypes;
 
+    private readonly Queue<int> _addedEntityQueue;
+    private readonly Queue<int> _deletedEntityQueue;
+
     protected readonly FastList<int> EntitiesIds = new(255);
     protected readonly IEntityManager EntityManager;
     protected readonly IComponentManager ComponentManager;
+
+    private bool _isBusy;
+
+    protected bool IsBusy
+    {
+        get => _isBusy;
+        set
+        {
+            if (value == false)
+            {
+                while (_deletedEntityQueue.TryDequeue(out var entityId))
+                    EntitiesIds.Remove(entityId);
+
+                while (_addedEntityQueue.TryDequeue(out var entityId))
+                    EntitiesIds.Add(entityId);
+            }
+
+            _isBusy = value;
+        }
+    }
 
     protected ComponentsFilter(IEntityManager entityManager, IComponentManager componentManager, params int[] componentTypes)
     {
@@ -24,15 +47,24 @@ public abstract class ComponentsFilter : IComponentFilter
         entityManager.Events.EntityComponentRemoved += OnEntityComponentRemoved;
 
         _componentTypes = componentTypes;
+
+        _addedEntityQueue = new Queue<int>();
+        _deletedEntityQueue = new Queue<int>();
+
         EntityManager = entityManager;
         ComponentManager = componentManager;
     }
 
     protected virtual bool OnEntityAdded(ref EntityEventArgs args)
     {
-        if (IsEntityContainsAllComponents(args.EntityId))
+        if (EntitiesIds.Contains(args.EntityId) ||
+            IsEntityContainsAllComponents(args.EntityId))
         {
-            EntitiesIds.Add(args.EntityId);
+            if (IsBusy)
+                _addedEntityQueue.Enqueue(args.EntityId);
+            else
+                EntitiesIds.Add(args.EntityId);
+
             return true;
         }
 
@@ -43,7 +75,11 @@ public abstract class ComponentsFilter : IComponentFilter
     {
         if (IsEntityContainsAllComponents(args.EntityId))
         {
-            EntitiesIds.Remove(args.EntityId);
+            if (IsBusy)
+                _deletedEntityQueue.Enqueue(args.EntityId);
+            else
+                EntitiesIds.Remove(args.EntityId);
+
             return true;
         }
 
@@ -52,10 +88,15 @@ public abstract class ComponentsFilter : IComponentFilter
 
     protected virtual bool OnEntityComponentAdded(ref EntityComponentEventArgs args)
     {
-        if (!IsEntityContainsAllComponents(args.EntityId))
+        if (EntitiesIds.Contains(args.EntityId) ||
+            !IsEntityContainsAllComponents(args.EntityId))
             return false;
 
-        EntitiesIds.Add(args.EntityId);
+        if (IsBusy)
+            _addedEntityQueue.Enqueue(args.EntityId);
+        else
+            EntitiesIds.Add(args.EntityId);
+
         return true;
     }
 
@@ -64,7 +105,11 @@ public abstract class ComponentsFilter : IComponentFilter
         if (Array.IndexOf(_componentTypes, args.ComponentType) == -1)
             return false;
 
-        EntitiesIds.Remove(args.EntityId);
+        if (IsBusy)
+            _deletedEntityQueue.Enqueue(args.EntityId);
+        else
+            EntitiesIds.Remove(args.EntityId);
+
         return true;
     }
 
@@ -73,7 +118,7 @@ public abstract class ComponentsFilter : IComponentFilter
         ref var entity = ref EntityManager.Get(entityId);
         var counter = 0;
 
-        for (int i = 0; i < entity.ComponentsTypes.Count; i++)
+        for (var i = 0; i < entity.ComponentsTypes.Count; i++)
         {
             if (Array.IndexOf(_componentTypes, entity.ComponentsTypes[i]) != -1)
                 ++counter;

@@ -1,4 +1,6 @@
-﻿using Core.Ecs.Managers;
+﻿using System.Diagnostics;
+using Core.Ecs.Managers;
+using Core.Ecs.Systems;
 
 namespace Core.Ecs;
 
@@ -31,5 +33,17 @@ public class GameWorld : IGameWorld
     public EntityBuilder GetEntity(int id)
     {
         return new EntityBuilder(id, EntityManager, ComponentManager);
+    }
+
+    public void Update(GameContext context)
+    {
+        foreach (var system in SystemManager.Systems)
+            system.Update(context);
+    }
+
+    public void RegisterSystem<TSystem>(GameContext context)
+        where TSystem : class, ISystem, new()
+    {
+        SystemManager.RegisterSystem<TSystem>(context);
     }
 }
