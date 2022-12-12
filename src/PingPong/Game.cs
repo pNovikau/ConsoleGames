@@ -13,7 +13,7 @@ public class Game
     public void Init()
     {
         _gameWorld = new GameWorld();
-        _renderer = new ConsoleRenderer(30, 60);
+        _renderer = new ConsoleRenderer(30, 62);
 
         var context = new GameContext
         {

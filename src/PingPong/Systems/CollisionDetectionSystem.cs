@@ -20,6 +20,9 @@ public class CollisionDetectionSystem : Core.Ecs.Systems.System
     {
         foreach (var (sourceEntityId, sourceCollidedComponentSpan) in _componentsFilter)
         {
+            var hasCollision = false;
+            var sourceEntity = context.GameWorld.GetEntity(sourceEntityId);
+            
             ref var sourceCollidedComponent = ref sourceCollidedComponentSpan[0];
 
             foreach (var (targetEntityId, targetBoxColliderComponentSpan) in _componentsFilter)
@@ -28,27 +31,29 @@ public class CollisionDetectionSystem : Core.Ecs.Systems.System
                     continue;
 
                 ref var targetBoxColliderComponent = ref targetBoxColliderComponentSpan[0];
-                var entity = context.GameWorld.GetEntity(sourceEntityId);
 
                 var overlap = Math.GetOverlappingArea(sourceCollidedComponent.Rectangle, targetBoxColliderComponent.Rectangle);
 
-                if (!overlap.IsEmpty)
-                {
-                    ref var sourceHasCollisionComponent = ref entity.HasComponent<HasCollisionComponent>()
-                        ? ref entity.GetComponent<HasCollisionComponent>()
-                        : ref entity.AddComponent<HasCollisionComponent>();
+                if (overlap.IsEmpty) 
+                    continue;
 
-                    sourceHasCollisionComponent.Overlap = overlap;
-                    sourceHasCollisionComponent.TargetEntityId = targetEntityId;
-                    
-                    Debug.WriteLine("[CollisionDetectionSystem]: Collision added {0} target {1}", sourceEntityId, targetEntityId);
-                }
-                else if (entity.HasComponent<HasCollisionComponent>())
-                {
-                    entity.RemoveComponent<HasCollisionComponent>();
-                    
-                    Debug.WriteLine("[CollisionDetectionSystem]: Collision removed {0} target {1}", sourceEntityId, targetEntityId);
-                }
+                ref var sourceHasCollisionComponent = ref sourceEntity.HasComponent<HasCollisionComponent>()
+                    ? ref sourceEntity.GetComponent<HasCollisionComponent>()
+                    : ref sourceEntity.AddComponent<HasCollisionComponent>();
+
+                sourceHasCollisionComponent.Overlap = overlap;
+                sourceHasCollisionComponent.TargetEntityId = targetEntityId;
+
+                hasCollision = true;
+                
+                Debug.WriteLine("[CollisionDetectionSystem]: Collision added {0} target {1}", sourceEntityId, targetEntityId);
+            }
+
+            if (!hasCollision && sourceEntity.HasComponent<HasCollisionComponent>())
+            {
+                sourceEntity.RemoveComponent<HasCollisionComponent>();
+
+                Debug.WriteLine("[CollisionDetectionSystem]: Collision removed sourceEntityId {0}", sourceEntityId);
             }
         }
     }

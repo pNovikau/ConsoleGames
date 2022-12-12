@@ -6,106 +6,66 @@ namespace PingPong.Entities;
 
 public static class BoxEntities
 {
-    private static void CreateLeftWall(in GameContext gameContext)
+    private static void CreateVerticalWall(in GameContext gameContext, Vector2<int> position, Vector2<int> size)
     {
         var gameWorld = gameContext.GameWorld;
         var wall = gameWorld.AddEntity();
         
         ref var positionComponent = ref wall.AddComponent<PositionComponent>();
-        positionComponent.Point = new Vector2<int>(0, 2);
+        positionComponent.Point = position;
 
         ref var boxColliderComponent = ref wall.AddComponent<BoxColliderComponent>();
-        var size = new Vector2<int>
-        {
-            X = 1,
-            Y = gameContext.Renderer.Height - positionComponent.Point.Y
-        };
         boxColliderComponent.Rectangle = new Rectangle<int>(positionComponent.Point, size);
 
         ref var drawableComponent = ref wall.AddComponent<DrawableComponent>();
-        var array = new char[gameContext.Renderer.Width * size.Y];
+        var array = new char[size.Y * 2];
+
         for (var i = 0; i < array.Length; i++)
         {
-            if (i % gameContext.Renderer.Width == 0)
+            if (i % 2 == 0)
                 array[i] = '*';
+            else
+                array[i] = '\n';
         }
 
         drawableComponent.Symbols = array;
     }
-    
-    private static void CreateRightWall(in GameContext gameContext)
+
+    private static void CreateHorizontalWall(in GameContext gameContext, Vector2<int> position, Vector2<int> size)
     {
         var gameWorld = gameContext.GameWorld;
         var wall = gameWorld.AddEntity();
         
         ref var positionComponent = ref wall.AddComponent<PositionComponent>();
-        positionComponent.Point = new Vector2<int>(0, 2);
+        positionComponent.Point = position;
 
         ref var boxColliderComponent = ref wall.AddComponent<BoxColliderComponent>();
-        var size = new Vector2<int>
-        {
-            X = 1,
-            Y = gameContext.Renderer.Height - positionComponent.Point.Y
-        };
-        boxColliderComponent.Rectangle = new Rectangle<int>(new Vector2<int>(gameContext.Renderer.Width - 1, 2), size);
+        boxColliderComponent.Rectangle = new Rectangle<int>(position, size);
 
         ref var drawableComponent = ref wall.AddComponent<DrawableComponent>();
-        var array = new char[gameContext.Renderer.Width * size.Y];
-        for (var i = 0; i < array.Length; i++)
-        {
-            if ((i + 1) % gameContext.Renderer.Width == 0)
-                array[i] = '*';
-        }
+        var array = new char[size.X + 1];
+        array.AsSpan().Fill('*');
+        array[^1] = '\n';
 
         drawableComponent.Symbols = array;
     }
     
     public static void Create(in GameContext gameContext)
     {
-        CreateLeftWall(gameContext);
-        CreateRightWall(gameContext);
+        var leftWallPosition = new Vector2<int>(0, 2);
+        var leftWallSize = new Vector2<int>(1, gameContext.Renderer.Height - leftWallPosition.Y);
+        CreateVerticalWall(gameContext, leftWallPosition, leftWallSize);
 
-        //var gameWorld = gameContext.GameWorld;
-        //var wall = gameWorld.AddEntity();
-        //
-        //ref var positionComponent = ref wall.AddComponent<PositionComponent>();
-        //positionComponent.X = 0;
-        //positionComponent.Y = 2;
-        //
-        //ref var sizeComponent = ref wall.AddComponent<SizeComponent>();
-        //sizeComponent.Height = gameContext.Renderer.Height - positionComponent.Y;
-        //sizeComponent.Width = gameContext.Renderer.Width - positionComponent.X;
-        //
-        //ref var drawableComponent = ref wall.AddComponent<DrawableComponent>();
-        //
-        //var array = new char[sizeComponent.Height * sizeComponent.Width];
-        //
-        //array.AsSpan()[..sizeComponent.Width].Fill('*');
-        //array.AsSpan()[^sizeComponent.Width..].Fill('*');
-        //
-        //for (var i = 0; i < array.Length; i++)
-        //{
-        //    if (i % sizeComponent.Width == 0 ||
-        //        (i + 1) % sizeComponent.Width == 0)
-        //        array[i] = '*';
-        //}
-        //
-        //drawableComponent.Symbols = array;
-        //
-        //ref var leftBorder = ref wall.AddComponent<BoxColliderComponent>();
-        //leftBorder.Point1 = new Point(positionComponent.X, positionComponent.Y);
-        //leftBorder.Point2 = new Point(positionComponent.X, positionComponent.Y + sizeComponent.Height);
-        //
-        //ref var rightBorder = ref wall.AddComponent<BoxColliderComponent>();
-        //rightBorder.Point1 = new Point(positionComponent.X + sizeComponent.Width, positionComponent.Y);
-        //rightBorder.Point2 = new Point(positionComponent.X + sizeComponent.Width, positionComponent.Y + sizeComponent.Height);
-        //
-        //ref var topBorder = ref wall.AddComponent<BoxColliderComponent>();
-        //topBorder.Point1 = new Point(positionComponent.X + 1, positionComponent.Y);
-        //topBorder.Point2 = new Point(positionComponent.X + sizeComponent.Width - 1, positionComponent.Y);
-        //
-        //ref var bottomBorder = ref wall.AddComponent<BoxColliderComponent>();
-        //bottomBorder.Point1 = new Point(positionComponent.X + 1, positionComponent.Y + sizeComponent.Height);
-        //bottomBorder.Point2 = new Point(positionComponent.X + sizeComponent.Width - 1, positionComponent.Y + sizeComponent.Height);
+        var rightWallPosition = new Vector2<int>(gameContext.Renderer.Width - 2, 2);
+        var rightWallSize = new Vector2<int>(1, gameContext.Renderer.Height - rightWallPosition.Y);
+        CreateVerticalWall(gameContext, rightWallPosition, rightWallSize);
+
+        var topWallPosition = new Vector2<int>(1, 2);
+        var topWallSize = new Vector2<int>(gameContext.Renderer.Width - 3, 1);
+        CreateHorizontalWall(gameContext, topWallPosition, topWallSize);
+
+        var bottomWallPosition = new Vector2<int>(1, gameContext.Renderer.Height - 1);
+        var bottomWallSize = new Vector2<int>(gameContext.Renderer.Width - 3, 1);
+        CreateHorizontalWall(gameContext, bottomWallPosition, bottomWallSize);
     }
 }
