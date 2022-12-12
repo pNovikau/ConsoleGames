@@ -13,7 +13,7 @@ public sealed class GameTime
     public int TotalFrames => _totalFrames;
     public TimeSpan GetTime => _clock.ElapsedTime;
     public TimeSpan Delta => _deltaTime;
-    
+
     public void Update()
     {
         ++_totalFrames;
