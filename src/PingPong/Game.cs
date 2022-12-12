@@ -35,6 +35,7 @@ public class Game
         FpsEntity.Create(_gameWorld);
         PlayerEntity.Create(context);
         BoxEntities.Create(context);
+        BallEntity.Create(context);
     }
 
     public void Run()

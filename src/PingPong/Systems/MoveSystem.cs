@@ -36,6 +36,26 @@ public class MoveSystem : Core.Ecs.Systems.System
                     break;
 
                 case MoveComponent.Direction.Down:
+                    positionComponent.Point.Y += 1;
+                    break;
+                
+                case MoveComponent.Direction.UpLeft:
+                    positionComponent.Point.Y -= 1;
+                    positionComponent.Point.X -= 1;
+                    break;
+                
+                case MoveComponent.Direction.UpRight:
+                    positionComponent.Point.Y -= 1;
+                    positionComponent.Point.X += 1;
+                    break;
+                
+                case MoveComponent.Direction.DownLeft:
+                    positionComponent.Point.Y += 1;
+                    positionComponent.Point.X -= 1;
+                    break;
+                
+                case MoveComponent.Direction.DownRight:
+                    positionComponent.Point.Y += 1;
                     positionComponent.Point.X += 1;
                     break;
             }

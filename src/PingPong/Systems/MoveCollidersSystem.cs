@@ -43,6 +43,30 @@ public class MoveCollidersSystem : Core.Ecs.Systems.System
                     boxColliderComponent.Rectangle.Position.Y += 1;
                     Debug.WriteLine("[MoveCollidersSystem]: {0}", boxColliderComponent.Rectangle.Position);
                     break;
+                
+                case MoveComponent.Direction.UpLeft:
+                    boxColliderComponent.Rectangle.Position.Y -= 1;
+                    boxColliderComponent.Rectangle.Position.X -= 1;
+                    Debug.WriteLine("[MoveCollidersSystem]: {0}", boxColliderComponent.Rectangle.Position);
+                    break;
+                
+                case MoveComponent.Direction.UpRight:
+                    boxColliderComponent.Rectangle.Position.Y -= 1;
+                    boxColliderComponent.Rectangle.Position.X += 1;
+                    Debug.WriteLine("[MoveCollidersSystem]: {0}", boxColliderComponent.Rectangle.Position);
+                    break;
+                
+                case MoveComponent.Direction.DownLeft:
+                    boxColliderComponent.Rectangle.Position.Y += 1;
+                    boxColliderComponent.Rectangle.Position.X -= 1;
+                    Debug.WriteLine("[MoveCollidersSystem]: {0}", boxColliderComponent.Rectangle.Position);
+                    break;
+                
+                case MoveComponent.Direction.DownRight:
+                    boxColliderComponent.Rectangle.Position.Y += 1;
+                    boxColliderComponent.Rectangle.Position.X += 1;
+                    Debug.WriteLine("[MoveCollidersSystem]: {0}", boxColliderComponent.Rectangle.Position);
+                    break;
             }
         }
     }

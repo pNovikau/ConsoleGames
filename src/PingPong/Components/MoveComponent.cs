@@ -8,9 +8,13 @@ public struct MoveComponent : IComponent<MoveComponent>
     {
         None,
         Up,
+        Down,
         Left,
         Right,
-        Down
+        UpLeft,
+        UpRight,
+        DownLeft,
+        DownRight
     }
 
     public Direction Dir;
