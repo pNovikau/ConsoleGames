@@ -6,6 +6,13 @@ namespace Core.Common;
 public static class Math
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int DivideRoundingUp(int x, int y)
+    {
+        var quotient = System.Math.DivRem(x, y, out var remainder);
+        return remainder == 0 ? quotient : quotient + 1;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsPointInRectangle<TNumber>(in Rectangle<TNumber> rectangle, in Vector2<TNumber> point)
         where TNumber : INumber<TNumber>
     {

@@ -1,4 +1,5 @@
 using Core;
+using Core.Common;
 using Core.Ecs.ComponentFilters;
 using Core.Ecs.Extensions;
 using PingPong.Components;
@@ -21,7 +22,7 @@ public class DrawSystem : Core.Ecs.Systems.System
             ref var drawableComponent = ref drawableComponentSpan[0];
             ref var positionComponent = ref positionComponentSpan[0];
 
-            context.Renderer.Draw(drawableComponent.Symbols, positionComponent.Point);
+            context.Renderer.Draw(drawableComponent.Symbols, new Vector2<int>((int)positionComponent.Point.X, (int)positionComponent.Point.Y));
         }
     }
 }

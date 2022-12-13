@@ -5,7 +5,7 @@ namespace PingPong.Components;
 
 public struct BoxColliderComponent : IComponent<BoxColliderComponent>
 {
-    public Rectangle<int> Rectangle;
+    public Rectangle<float> Rectangle;
 
     public int Id { get; init; }
 }

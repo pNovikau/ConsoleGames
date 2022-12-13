@@ -21,11 +21,20 @@ public class PlayerControlSystem : Core.Ecs.Systems.System
             ref var moveComponent = ref moveComponentSpan[0];
 
             if (Keyboard.IsKeyPressed(ConsoleKey.A))
-                moveComponent.Dir = MoveComponent.Direction.Left;
+            {
+                moveComponent.Direction.X = -1;
+                moveComponent.Direction.Y = 0;
+            }
             else if (Keyboard.IsKeyPressed(ConsoleKey.D))
-                moveComponent.Dir = MoveComponent.Direction.Right;
+            {
+                moveComponent.Direction.X = 1;
+                moveComponent.Direction.Y = 0;
+            }
             else
-                moveComponent.Dir = MoveComponent.Direction.None;
+            {
+                moveComponent.Direction.X = 0;
+                moveComponent.Direction.Y = 0;
+            }
         }
     }
 }

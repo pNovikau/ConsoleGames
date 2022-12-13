@@ -11,7 +11,7 @@ public class ConsoleRenderer : IRenderer
         Height = height;
         Width = width;
 
-        _renderArea = new RenderArea(new Vector2<int>(width, height), new Vector2<int>());
+        _renderArea = new PInvokeRenderArea(new Vector2<int>(width, height), new Vector2<int>());
     }
 
     public int Width { get; }
@@ -22,7 +22,7 @@ public class ConsoleRenderer : IRenderer
     {
         _renderArea.Clear();
 
-        Console.Clear();
+        //Console.Clear();
     }
 
     public void Draw(ReadOnlySpan<char> symbols, Vector2<int> position)

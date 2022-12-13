@@ -26,22 +26,24 @@ internal class RenderArea : IRenderArea
 
     public void Draw(ReadOnlySpan<char> symbols, Vector2<int> position)
     {
-        var renderAreaIndex = Size.X * position.Y + position.X;
-
-        for (var i = 0; i < symbols.Length; i++, renderAreaIndex++)
+        var index = 0;
+        for (var y = position.Y; y < Size.Y && index < symbols.Length; y++)
         {
-            if (symbols[i] == '\n')
+            for (var x = position.X; x < Size.X && index < symbols.Length; x++, index++)
             {
-                var nextLineNumber = renderAreaIndex / Size.X + 1;
-                renderAreaIndex = nextLineNumber * Size.X + position.X - 1;
+                var renderAreaIndex = (Size.X * y) + x;
 
-                continue;
+                if (symbols[index] == '\n')
+                {
+                    ++index;
+                    break;
+                }
+
+                if (symbols[index] == '\0')
+                    continue;
+
+                _renderArea[renderAreaIndex] = symbols[index];
             }
-
-            if (symbols[i] == '\0')
-                continue;
-
-            _renderArea[renderAreaIndex] = symbols[i];
         }
     }
 
@@ -53,11 +55,15 @@ internal class RenderArea : IRenderArea
             for (var j = 0; j < (Size.X - 1); j++, index++)
             {
                 if (_renderArea[index] == '\0')
+                {
                     _renderArea[index] = ' ';
+                }
             }
 
             if (index != _renderArea.Length)
+            {
                 _renderArea[index++] = '\n';
+            }
         }
 
         writer.Write(_renderArea);

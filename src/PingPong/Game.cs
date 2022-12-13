@@ -13,7 +13,7 @@ public class Game
     public void Init()
     {
         _gameWorld = new GameWorld();
-        _renderer = new ConsoleRenderer(30, 62);
+        _renderer = new ConsoleRenderer(180, 800);
 
         var context = new GameContext
         {
@@ -32,7 +32,7 @@ public class Game
 
         _gameWorld.Initialize(context);
 
-        FpsEntity.Create(_gameWorld);
+        //FpsEntity.Create(_gameWorld);
         PlayerEntity.Create(context);
         BoxEntities.Create(context);
         BallEntity.Create(context);
@@ -49,7 +49,7 @@ public class Game
 
         while (true)
         {
-            Thread.Sleep(25);
+            Thread.Sleep(66);
 
             context.Renderer.Clear();
 

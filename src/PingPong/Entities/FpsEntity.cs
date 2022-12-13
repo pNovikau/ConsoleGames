@@ -13,7 +13,7 @@ public static class FpsEntity
         fps.AddComponent<FpsComponent>();
 
         ref var drawableComponent = ref fps.AddComponent<DrawableComponent>();
-        drawableComponent.Symbols = new char[125];
-        "FPS: ".ToArray().CopyTo(drawableComponent.Symbols.AsMemory());
+        //drawableComponent.Symbols = new char[125];
+        //"FPS: ".ToArray().CopyTo(drawableComponent.Symbols.AsMemory());
     }
 }

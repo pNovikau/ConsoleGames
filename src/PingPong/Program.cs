@@ -2,8 +2,15 @@
 
 using PingPong;
 
-var game = new Game();
-
-game.Init();
-game.Run();
+class Program
+{
+    [STAThread]
+    static void Main(string[] args)
+    {
+        var game = new Game();
+        
+        game.Init();
+        game.Run();
+    }
+}
 

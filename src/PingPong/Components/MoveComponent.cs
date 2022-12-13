@@ -1,23 +1,12 @@
+using Core.Common;
 using Core.Ecs.Components;
 
 namespace PingPong.Components;
 
 public struct MoveComponent : IComponent<MoveComponent>
 {
-    public enum Direction
-    {
-        None,
-        Up,
-        Down,
-        Left,
-        Right,
-        UpLeft,
-        UpRight,
-        DownLeft,
-        DownRight
-    }
-
-    public Direction Dir;
+    public Vector2<float> Direction;
+    public float Velocity;
 
     public int Id { get; init; }
 }

@@ -4,7 +4,6 @@ namespace Core;
 
 public interface IRenderArea
 {
-    IReadOnlyList<char> Symbols { get; }
     public Vector2<int> Size { get; init; }
     public Vector2<int> Position { get; init; }
 

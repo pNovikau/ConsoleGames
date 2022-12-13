@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using Core;
 using Core.Ecs.ComponentFilters;
 using Core.Ecs.Extensions;
@@ -21,53 +20,9 @@ public class MoveCollidersSystem : Core.Ecs.Systems.System
         {
             ref var moveComponent = ref moveComponentSpan[0];
             ref var boxColliderComponent = ref boxColliderComponentSpan[0];
-
-            switch (moveComponent.Dir)
-            {
-                case MoveComponent.Direction.Up:
-                    boxColliderComponent.Rectangle.Position.Y -= 1;
-                    Debug.WriteLine("[MoveCollidersSystem]: {0}", boxColliderComponent.Rectangle.Position);
-                    break;
-
-                case MoveComponent.Direction.Left:
-                    boxColliderComponent.Rectangle.Position.X -= 1;
-                    Debug.WriteLine("[MoveCollidersSystem]: {0}", boxColliderComponent.Rectangle.Position);
-                    break;
-
-                case MoveComponent.Direction.Right:
-                    boxColliderComponent.Rectangle.Position.X += 1;
-                    Debug.WriteLine("[MoveCollidersSystem]: {0}", boxColliderComponent.Rectangle.Position);
-                    break;
-
-                case MoveComponent.Direction.Down:
-                    boxColliderComponent.Rectangle.Position.Y += 1;
-                    Debug.WriteLine("[MoveCollidersSystem]: {0}", boxColliderComponent.Rectangle.Position);
-                    break;
-                
-                case MoveComponent.Direction.UpLeft:
-                    boxColliderComponent.Rectangle.Position.Y -= 1;
-                    boxColliderComponent.Rectangle.Position.X -= 1;
-                    Debug.WriteLine("[MoveCollidersSystem]: {0}", boxColliderComponent.Rectangle.Position);
-                    break;
-                
-                case MoveComponent.Direction.UpRight:
-                    boxColliderComponent.Rectangle.Position.Y -= 1;
-                    boxColliderComponent.Rectangle.Position.X += 1;
-                    Debug.WriteLine("[MoveCollidersSystem]: {0}", boxColliderComponent.Rectangle.Position);
-                    break;
-                
-                case MoveComponent.Direction.DownLeft:
-                    boxColliderComponent.Rectangle.Position.Y += 1;
-                    boxColliderComponent.Rectangle.Position.X -= 1;
-                    Debug.WriteLine("[MoveCollidersSystem]: {0}", boxColliderComponent.Rectangle.Position);
-                    break;
-                
-                case MoveComponent.Direction.DownRight:
-                    boxColliderComponent.Rectangle.Position.Y += 1;
-                    boxColliderComponent.Rectangle.Position.X += 1;
-                    Debug.WriteLine("[MoveCollidersSystem]: {0}", boxColliderComponent.Rectangle.Position);
-                    break;
-            }
+            
+            boxColliderComponent.Rectangle.Position.X += moveComponent.Direction.X * moveComponent.Velocity;
+            boxColliderComponent.Rectangle.Position.Y += moveComponent.Direction.Y * moveComponent.Velocity;
         }
     }
 }

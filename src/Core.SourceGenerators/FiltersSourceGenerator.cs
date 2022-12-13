@@ -14,10 +14,10 @@ namespace Core.SourceGenerators
                 return;
 
             var content = FiltersSourceGeneratorContext.FilterBuilder.GetContent();
-            context.AddSource("ComponentsFilters.g", SourceText.From(content, Encoding.UTF8));
+            context.AddSource("ComponentsFilters.g.cs", SourceText.From(content, Encoding.UTF8));
 
             content = FiltersSourceGeneratorContext.TuplesBuilder.GetContent();
-            context.AddSource("ComponentsTuples.g", SourceText.From(content, Encoding.UTF8));
+            context.AddSource("ComponentsTuples.g.cs", SourceText.From(content, Encoding.UTF8));
             
             FiltersSourceGeneratorContext.Clear();
         }

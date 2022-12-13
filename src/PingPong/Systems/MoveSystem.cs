@@ -21,44 +21,8 @@ public class MoveSystem : Core.Ecs.Systems.System
             ref var moveComponent = ref moveComponentSpan[0];
             ref var positionComponent = ref positionComponentSpan[0];
 
-            switch (moveComponent.Dir)
-            {
-                case MoveComponent.Direction.Up:
-                    positionComponent.Point.Y -= 1;
-                    break;
-
-                case MoveComponent.Direction.Left:
-                    positionComponent.Point.X -= 1;
-                    break;
-
-                case MoveComponent.Direction.Right:
-                    positionComponent.Point.X += 1;
-                    break;
-
-                case MoveComponent.Direction.Down:
-                    positionComponent.Point.Y += 1;
-                    break;
-                
-                case MoveComponent.Direction.UpLeft:
-                    positionComponent.Point.Y -= 1;
-                    positionComponent.Point.X -= 1;
-                    break;
-                
-                case MoveComponent.Direction.UpRight:
-                    positionComponent.Point.Y -= 1;
-                    positionComponent.Point.X += 1;
-                    break;
-                
-                case MoveComponent.Direction.DownLeft:
-                    positionComponent.Point.Y += 1;
-                    positionComponent.Point.X -= 1;
-                    break;
-                
-                case MoveComponent.Direction.DownRight:
-                    positionComponent.Point.Y += 1;
-                    positionComponent.Point.X += 1;
-                    break;
-            }
+            positionComponent.Point.X += moveComponent.Direction.X * moveComponent.Velocity;
+            positionComponent.Point.Y += moveComponent.Direction.Y * moveComponent.Velocity;
         }
     }
 }

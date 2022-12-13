@@ -1,6 +1,7 @@
 using Core;
 using Core.Common;
 using PingPong.Components;
+using PingPong.Resources;
 
 namespace PingPong.Entities;
 
@@ -14,15 +15,16 @@ public static class PlayerEntity
         player.AddComponent<PlayerComponent>();
         
         ref var positionComponent = ref player.AddComponent<PositionComponent>();
-        positionComponent.Point = new Vector2<int>(gameContext.Renderer.Width / 2, gameContext.Renderer.Height - 2);
+        positionComponent.Point = new Vector2<float>(gameContext.Renderer.Width / 2, gameContext.Renderer.Height - 11);
         
         ref var drawableComponent = ref player.AddComponent<DrawableComponent>();
-        drawableComponent.Symbols = "|============|".ToArray();
+        drawableComponent.Symbols = Sprites.Player;
 
         ref var boxColliderComponent = ref player.AddComponent<BoxColliderComponent>();
-        boxColliderComponent.Rectangle = new Rectangle<int>(positionComponent.Point, new Vector2<int>(drawableComponent.Symbols.Length, 1));
+        var length = Sprites.Player.IndexOf('\n');
+        boxColliderComponent.Rectangle = new Rectangle<float>(positionComponent.Point, new Vector2<float>(length, 7));
 
         ref var moveComponent = ref player.AddComponent<MoveComponent>();
-        moveComponent.Dir = MoveComponent.Direction.None;
+        moveComponent.Velocity = 4;
     }
 }
