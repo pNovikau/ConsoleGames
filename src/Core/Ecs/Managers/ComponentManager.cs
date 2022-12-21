@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Core.Ecs.Components;
+using DebugViewer.Api;
 
 namespace Core.Ecs.Managers;
 
@@ -11,6 +12,8 @@ public class ComponentManager : IComponentManager
         where TComponent : struct, IComponent<TComponent>
     {
         var componentBucket = GetComponentBucket<TComponent>();
+
+        DebugViewerApi.Profiler.IncrementCounter<TComponent>();
 
         return ref componentBucket.GetComponent();
     }
@@ -46,6 +49,8 @@ public class ComponentManager : IComponentManager
 
         var componentBucket = (IComponentBucket<TComponent>)_components[index];
         componentBucket.Delete(id);
+
+        DebugViewerApi.Profiler.DecrementCounter<TComponent>();
     }
 
     private IComponentBucket<TComponent> GetComponentBucket<TComponent>()

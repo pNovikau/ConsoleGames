@@ -21,10 +21,10 @@ public static class BoxEntities
 
         ref var drawableComponent = ref wall.AddComponent<DrawableComponent>();
 
-        var rowLength = Sprites.Brick.IndexOf('\n');
+        var rowLength = Sprites.Brick.Size.X;
         var requiredLength = (int)(gameContext.Renderer.Height - positionComponent.Point.Y) * rowLength;
 
-        drawableComponent.Symbols = string.Concat(Enumerable.Repeat(Sprites.Brick, Math.DivideRoundingUp(requiredLength, Sprites.Brick.Length)))
+        drawableComponent.Symbols = string.Concat(Enumerable.Repeat(Sprites.Brick.Symbols, Math.DivideRoundingUp(requiredLength, Sprites.Brick.Size.X * Sprites.Brick.Size.Y)))
             .Substring(0, requiredLength);
     }
 
@@ -40,12 +40,12 @@ public static class BoxEntities
         boxColliderComponent.Rectangle = new Rectangle<float>(position, size);
 
         ref var drawableComponent = ref wall.AddComponent<DrawableComponent>();
-        drawableComponent.Symbols = Sprites.Brick;
+        drawableComponent.Symbols = Sprites.Brick.Symbols;
     }
     
     public static void Create(in GameContext gameContext)
     {
-        var rowLength = Sprites.Brick.IndexOf('\n');
+        var rowLength = Sprites.Brick.Size.X;
 
         var leftWallPosition = new Vector2<float>(0, 2);
         var leftWallSize = new Vector2<float>(rowLength, gameContext.Renderer.Height - leftWallPosition.Y);

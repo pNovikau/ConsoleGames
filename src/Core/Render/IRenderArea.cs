@@ -1,6 +1,6 @@
 using Core.Common;
 
-namespace Core;
+namespace Core.Render;
 
 public interface IRenderArea
 {
@@ -9,5 +9,5 @@ public interface IRenderArea
 
     void Clear();
     void Draw(ReadOnlySpan<char> symbols, Vector2<int> position);
-    void Display(TextWriter writer);
+    void Display();
 }

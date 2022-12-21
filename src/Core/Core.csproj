@@ -9,20 +9,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Core.SourceGenerators\Core.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="..\Tools\DebugViewer.Api\DebugViewer.Api.csproj" />
     </ItemGroup>
-
-    <PropertyGroup>
-        <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
-        <CompilerGeneratedFilesOutputPath>Generated</CompilerGeneratedFilesOutputPath>
-    </PropertyGroup>
-
-    <ItemGroup>
-        <Compile Remove="Generated\**" />
-        <Compile Include="Generated\Core.SourceGenerators\**" />
-    </ItemGroup>
-    
-    <Target Name="CleanSourceGeneratedFiles" BeforeTargets="BeforeBuild" DependsOnTargets="$(BeforeBuildDependsOn)">
-        <RemoveDir Directories="Generated" />
-    </Target>
-    
 </Project>

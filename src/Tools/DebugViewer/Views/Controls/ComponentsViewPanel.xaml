@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="DebugViewer.Views.Controls.ComponentsViewPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DebugViewer.Views.Controls"
+             xmlns:componentsPanel="clr-namespace:DebugViewer.ViewModels.ComponentsPanel"
+             mc:Ignorable="d" 
+             d:Background="White"
+             d:DesignHeight="450" d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance Type=componentsPanel:ComponentsPanelViewModel, IsDesignTimeCreatable=True}">
+    <Grid Margin="3">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Label Content="Components panel"/>
+
+        <ListBox Grid.Row="1"
+                 ItemsSource="{Binding Path=ComponentsCollection}"
+                 d:ItemsSource="{d:SampleData}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock>
+                        <Run Text="{Binding Path=Name}"/>
+                        <Run Text=": "/>
+                        <Run Text="{Binding Path=Count}"/>
+                    </TextBlock>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</UserControl>

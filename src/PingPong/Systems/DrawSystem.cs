@@ -24,5 +24,7 @@ public class DrawSystem : Core.Ecs.Systems.System
 
             context.Renderer.Draw(drawableComponent.Symbols, new Vector2<int>((int)positionComponent.Point.X, (int)positionComponent.Point.Y));
         }
+
+        context.Renderer.Display();
     }
 }

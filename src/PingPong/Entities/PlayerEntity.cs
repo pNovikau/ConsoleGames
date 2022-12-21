@@ -16,13 +16,12 @@ public static class PlayerEntity
         
         ref var positionComponent = ref player.AddComponent<PositionComponent>();
         positionComponent.Point = new Vector2<float>(gameContext.Renderer.Width / 2, gameContext.Renderer.Height - 11);
-        
+
         ref var drawableComponent = ref player.AddComponent<DrawableComponent>();
-        drawableComponent.Symbols = Sprites.Player;
+        drawableComponent.Symbols = Sprites.Player.Symbols;
 
         ref var boxColliderComponent = ref player.AddComponent<BoxColliderComponent>();
-        var length = Sprites.Player.IndexOf('\n');
-        boxColliderComponent.Rectangle = new Rectangle<float>(positionComponent.Point, new Vector2<float>(length, 7));
+        boxColliderComponent.Rectangle = new Rectangle<float>(positionComponent.Point, new Vector2<float>(Sprites.Player.Size.X, Sprites.Player.Size.Y));
 
         ref var moveComponent = ref player.AddComponent<MoveComponent>();
         moveComponent.Velocity = 4;

@@ -18,13 +18,13 @@ public static class BallEntity
         positionComponent.Point = new Vector2<float>(gameContext.Renderer.Width / 2, gameContext.Renderer.Height / 2);
         
         ref var moveComponent = ref ball.AddComponent<MoveComponent>();
-        moveComponent.Direction = new Vector2<float>(random.NextSingle() * (1f - -1f) + -1f, random.NextSingle() * (1f - -1f) + -1f);
-        moveComponent.Velocity = 5;
+        //moveComponent.Direction = new Vector2<float>(random.NextSingle() * (1f - -1f) + -1f, random.NextSingle() * (1f - -1f) + -1f);
+        //moveComponent.Velocity = 5;
         
         ref var boxColliderComponent = ref ball.AddComponent<BoxColliderComponent>();
         boxColliderComponent.Rectangle = new Rectangle<float>(positionComponent.Point, new Vector2<float>(35, 17));
         
         ref var drawComponent = ref ball.AddComponent<DrawableComponent>();
-        drawComponent.Symbols = Sprites.Ball;
+        drawComponent.Symbols = Sprites.Ball.Symbols;
     }
 }

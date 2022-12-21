@@ -13,10 +13,9 @@ using System.Collections;
 using Core.Ecs.Components;
 using Core.Ecs.Managers;
 
-namespace Core.Ecs.ComponentFilters;"
-);
+namespace Core.Ecs.ComponentFilters;");
         }
-        
+
         public void Add(string[] templatesParams)
         {
             _builder.Append(@"
@@ -136,6 +135,11 @@ public partial class ComponentsFilter<");
 }
 
 ");
+        }
+        
+        public void Clear()
+        {
+            _builder.Clear();
         }
 
         public string GetContent()
