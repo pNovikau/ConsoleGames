@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using Core;
 using Core.Ecs.ComponentFilters;
 using Core.Ecs.Extensions;
@@ -45,15 +44,11 @@ public class CollisionDetectionSystem : Core.Ecs.Systems.System
                 sourceHasCollisionComponent.TargetEntityId = targetEntityId;
 
                 hasCollision = true;
-                
-                Debug.WriteLine("[CollisionDetectionSystem]: Collision added {0} target {1}", sourceEntityId, targetEntityId);
             }
 
             if (!hasCollision && sourceEntity.HasComponent<HasCollisionComponent>())
             {
                 sourceEntity.RemoveComponent<HasCollisionComponent>();
-
-                Debug.WriteLine("[CollisionDetectionSystem]: Collision removed sourceEntityId {0}", sourceEntityId);
             }
         }
     }

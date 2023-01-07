@@ -1,5 +1,7 @@
 ﻿using Core;
 using Core.Ecs;
+using Core.Render;
+using DebugViewer.Api;
 using PingPong.Entities;
 using PingPong.Systems;
 
@@ -12,6 +14,8 @@ public class Game
 
     public void Init()
     {
+        using var _ = DebugViewerApi.Profiler.BeginScope("Game.Init");
+        
         _gameWorld = new GameWorld();
         _renderer = new ConsoleRenderer(180, 800);
 
@@ -40,6 +44,7 @@ public class Game
 
     public void Run()
     {
+
         var context = new GameContext
         {
             GameWorld = _gameWorld,
@@ -49,14 +54,14 @@ public class Game
 
         while (true)
         {
-            Thread.Sleep(66);
+            Thread.Sleep(5);
 
             context.Renderer.Clear();
 
-            _gameWorld.Update(context);
+            using (DebugViewerApi.Profiler.BeginScope("Game.Run.Update"))
+                _gameWorld.Update(context);
 
             context.GameTime.Update();
-            context.Renderer.Display();
         }
     }
 }
